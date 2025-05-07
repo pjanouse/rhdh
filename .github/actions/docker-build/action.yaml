@@ -103,6 +103,6 @@ runs:
         platforms: ${{ inputs.platform }}
         secrets: |
           "SL_TOKEN=${{ inputs.slToken }}"
-        build_args: |
+        build-args: |
           "SL_AGENT_VERSION=${{ inputs.slAgentVersion }}"
 
