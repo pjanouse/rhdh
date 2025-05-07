@@ -24,8 +24,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: quay.io
-  quay: bar
+  REGISTRY: quay.io1
+  QUAY: bar
 
 jobs:
   build-image:
