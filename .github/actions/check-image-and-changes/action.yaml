@@ -25,7 +25,9 @@ runs:
       uses: ./.github/actions/get-sha
 
     - name: Get Quay API
-      run: echo API: ${{ inputs.quay_api }}
+      run: echo API: ${quay}
+      env:
+        quay: ${{ inputs.quay_api }}
 
     - name: Check for relevant changes
       id: changes
