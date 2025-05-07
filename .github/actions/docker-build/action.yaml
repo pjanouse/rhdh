@@ -40,6 +40,12 @@ inputs:
     description: "Target given CPU platform architecture (default: linux/amd64)"
     required: false
     default: linux/amd64
+  slToken:
+    description: SeaLights token
+    required: true
+  slAgentVersion:
+    description: SeaLights agent version
+    required: true
 
 outputs:
   digest:
@@ -89,9 +95,14 @@ runs:
       id: build
       with:
         context: .
-        file: docker/Dockerfile
+        file: docker/Dockerfile.sealights
         push: ${{ inputs.push }}
         provenance: false
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: ${{ inputs.platform }}
+        secrets: |
+          "SL_TOKEN=${{ inputs.slToken }}"
+        build_args: |
+          "SL_AGENT_VERSION=${{ inputs.slAgentVersion }}"
+
