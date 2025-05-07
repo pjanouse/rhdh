@@ -25,6 +25,7 @@ runs:
       uses: ./.github/actions/get-sha
 
     - name: Get Quay API
+      shell: bash
       run: echo API "${{ inputs.quay_api }}"
 
     - name: Check for relevant changes
