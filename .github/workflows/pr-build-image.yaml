@@ -97,5 +97,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'The image is available at:\n* [`quay.io/rhdh-community/rhdh:pr-${{ github.event.number }}`](https://quay.io/rhdh-community/rhdh:pr-${{ github.event.number }}) or\n* [`quay.io/rhdh-community/rhdh:pr-${{ github.event.number }}-${{ env.SHORT_SHA }}`](https://quay.io/rhdh-community/rhdh:pr-${{ github.event.number }}-${{ env.SHORT_SHA }})'
+              body: 'The image is available at:\n* [`quay.io/pjanouse/rhdh:pr-${{ github.event.number }}`](https://quay.io/pjanouse/rhdh:pr-${{ github.event.number }}) or\n* [`quay.io/pjanouse/rhdh:pr-${{ github.event.number }}-${{ env.SHORT_SHA }}`](https://quay.io/pjanouse/rhdh:pr-${{ github.event.number }}-${{ env.SHORT_SHA }})'
             })
