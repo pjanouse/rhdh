@@ -47,7 +47,7 @@ jobs:
         id: check-image
         uses: ./.github/actions/check-image-and-changes
         with:
-          quay_api: foo-bar
+          quay_api: "foo-bar"
 
       - name: Debug outputs
         run: |
