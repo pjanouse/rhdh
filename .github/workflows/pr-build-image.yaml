@@ -24,8 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: quay.io1
-  QUAY: bar
+  REGISTRY: quay.io2
 
 jobs:
   build-image:
@@ -48,9 +47,7 @@ jobs:
         id: check-image
         uses: ./.github/actions/check-image-and-changes
         with:
-          quay_api: "foo-bar"
-        env:
-          quay: "foo"
+          quay_api: ${{ secrets.QUAY_API }}
 
       - name: Debug outputs
         run: |
