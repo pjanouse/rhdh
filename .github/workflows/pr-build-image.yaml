@@ -48,6 +48,8 @@ jobs:
         uses: ./.github/actions/check-image-and-changes
         with:
           quay_api: "foo-bar"
+        env:
+          quay: "foo"
 
       - name: Debug outputs
         run: |
