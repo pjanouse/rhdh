@@ -26,7 +26,7 @@ runs:
 
     - name: Get Quay API
       shell: bash
-      run: echo API "${{ inputs.quay_api }}"
+      run: echo API "${{ env.quay }}"
 
     - name: Check for relevant changes
       id: changes
