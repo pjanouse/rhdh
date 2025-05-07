@@ -1,6 +1,11 @@
 name: "Check Image and Relevant Changes"
 description: "Checks if the image already exists and if changes are relevant"
 
+inputs:
+  quay_api:
+    decsription: "QUAY.IO API token"
+    required: true
+
 outputs:
   image_exists:
     description: "True if the image already exists"
@@ -65,15 +70,15 @@ runs:
       run: |
         # First check the PR base tag (most important for skipping builds)
         IMAGE_TAG_PR="pr-${{ github.event.number }}"
-        IMAGE_NAME_PR="${{ env.REGISTRY }}/pjanouse/rhdh:${IMAGE_TAG_PR}"
+        IMAGE_NAME_PR="${{ env.REGISTRY }}/pjanouse-test/rhdh:${IMAGE_TAG_PR}"
 
-        IMAGE_EXISTS_PR=$(curl -s "https://quay.io/api/v1/repository/pjanouse/rhdh/tag/" | jq -r --arg tag "$IMAGE_TAG_PR" '.tags[] | select(.name == $tag) | .name')
+        IMAGE_EXISTS_PR=$(curl -s -H "Authorization: Bearer ${{ inputs.quay_api }}" "https://quay.io/api/v1/repository/pjanouse-test/rhdh/tag/" | jq -r --arg tag "$IMAGE_TAG_PR" '.tags[] | select(.name == $tag) | .name')
 
         # For safety, also check commit-specific tag
         IMAGE_TAG_COMMIT="pr-${{ github.event.number }}-${SHORT_SHA}"
         IMAGE_NAME_COMMIT="${{ env.REGISTRY }}/pjanouse/rhdh:${IMAGE_TAG_COMMIT}"
 
-        IMAGE_EXISTS_COMMIT=$(curl -s "https://quay.io/api/v1/repository/pjanouse/rhdh/tag/" | jq -r --arg tag "$IMAGE_TAG_COMMIT" '.tags[] | select(.name == $tag) | .name')
+        IMAGE_EXISTS_COMMIT=$(curl -s -H "Authorization: Bearer ${{ inputs.quay_api }}" "https://quay.io/api/v1/repository/pjanouse-test/rhdh/tag/" | jq -r --arg tag "$IMAGE_TAG_COMMIT" '.tags[] | select(.name == $tag) | .name')
 
         # Set image_exists to true if PR tag exists (primary) or commit tag exists (secondary)
         if [ -n "$IMAGE_EXISTS_PR" ]; then
