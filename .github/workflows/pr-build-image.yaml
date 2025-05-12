@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: quay.io
+  REGISTRY: {{ vars.REGISTRY }}
 
 jobs:
   build-image:
@@ -81,7 +81,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_TOKEN }}
-          imageName: pjanouse-test/rhdh1
+          imageName: pjanouse-test/rhdh
           imageTags: |
             pr-${{ github.event.number }}
             pr-${{ github.event.number }}-${{ env.SHORT_SHA }}
@@ -89,7 +89,7 @@ jobs:
           push: true
           platform: linux/amd64
           slToken: ${{ secrets.SL_TOKEN }}
-          slAgentVersion: ${{ env.SEALIGHTS_AGENT_VERSION }}
+          slAgentVersion: ${{ vars.SEALIGHTS_AGENT_VERSION }}
 
       - name: Comment the image pull link
         uses: actions/github-script@v7
