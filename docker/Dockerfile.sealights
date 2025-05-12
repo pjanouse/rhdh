@@ -277,7 +277,7 @@ RUN chmod a=r ./instrumentation.js
 ARG SL_AGENT_VERSION \
     BSID
 ENV SL_AGENT_VERSION=${SL_AGENT_VERSION} \
-    SL_BSID=${BSID}
+    SL_BSID=${BSID} \
     SL_fileExtensions=".js,.jsx,.ts,.tsx"
 
 RUN --mount=type=secret,id=SL_TOKEN,env=SL_TOKEN
