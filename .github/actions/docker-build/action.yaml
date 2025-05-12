@@ -94,8 +94,8 @@ runs:
       uses: addnab/docker-run-action@v3
       with:
         image: quay.io/konflux-ci/tekton-integration-catalog/sealights-nodejs:latest
-        options: -v ${{ github.workspace }}:/work_dir --workdir /work_dir
-        run: "npx slnodejs config --appName rhdb --branch main --build pjanouse-${{ env.SHORT_SHA }} --token ${{ inputs.SL_TOKEN }}"
+        options: -v ${{ github.workspace }}:/github/workspace
+        run: "npx slnodejs config --appName rhdb --branch main --build pjanouse-${{ env.SHORT_SHA }} --token ${{ inputs.slToken }}"
 
     - name: Save SeaLights BSID
       shell: bash
