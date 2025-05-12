@@ -274,15 +274,20 @@ RUN chmod a=r ./instrumentation.js
 
 # SeaLights
 
-ARG SL_AGENT_VERSION
+ARG SL_AGENT_VERSION \
+    BSID
 ENV SL_AGENT_VERSION=${SL_AGENT_VERSION} \
+    SL_BSID=${BSID}
     SL_fileExtensions=".js,.jsx,.ts,.tsx"
 
 RUN --mount=type=secret,id=SL_TOKEN,env=SL_TOKEN
 
-RUN npm i -g "slnodejs@${AGENT_VERSION}"
-RUN slnodejs scan \
-      --buildsessionid ${BSID} \
+RUN npm i -g "slnodejs@${SL_AGENT_VERSION}"
+RUN npm --version
+RUN npx --version
+RUN npm view slnodejs version
+RUN npx slnodejs scan \
+      --buildsessionid ${SL_BSID} \
       --scm git \
       --workspacepath "." \
       --token ${SL_TOKEN} \
