@@ -95,7 +95,9 @@ runs:
       with:
         image: quay.io/konflux-ci/tekton-integration-catalog/sealights-nodejs:latest
         options: -v ${{ github.workspace }}:/work_dir --workdir /work_dir
-        run: "npx slnodejs config --appName rhdb --branch main --build pjanouse-${{ env.SHORT_SHA }} --token ${{ secrets.SL_TOKEN }}"
+        run: "npx slnodejs config --appName rhdb --branch main --build pjanouse-${{ env.SHORT_SHA }} --token ${{ env.SL_TOKEN }}"
+      env:
+        SL_TOKEN: ${{ secrets.SL_TOKEN }}
 
     - name: Save SeaLights BSID
       shell: bash
