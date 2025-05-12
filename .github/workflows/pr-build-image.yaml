@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: {{ vars.REGISTRY }}
+  REGISTRY: ${{ vars.REGISTRY }}
 
 jobs:
   build-image:
