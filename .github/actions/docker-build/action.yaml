@@ -90,6 +90,17 @@ runs:
         labels: |
           ${{ inputs.imageLabels }}
 
+    - name: Get SeaLights BSID
+      uses: addnab/docker-run-action@v3
+      with:
+        image: quay.io/konflux-ci/tekton-integration-catalog/sealights-nodejs:latest
+        options: -v ${{ github.workspace }}:/work_dir --workdir /work_dir
+        run: "npx slnodejs config --appName rhdb --branch main --build pjanouse-${{ env.SHORT_SHA }} --token ${{ secrets.SL_TOKEN }}"
+
+    - name: Save SeaLights BSID
+      shell: bash
+      run: echo "BSID=$(cat buildSessionId)" >> $GITHUB_ENV
+      
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
       id: build
@@ -105,4 +116,4 @@ runs:
           "SL_TOKEN=${{ inputs.slToken }}"
         build-args: |
           "SL_AGENT_VERSION=${{ inputs.slAgentVersion }}"
-
+          "BSID=${{ env.BSID }}
