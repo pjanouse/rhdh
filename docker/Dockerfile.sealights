@@ -286,6 +286,9 @@ RUN npm i -g "slnodejs@${SL_AGENT_VERSION}"
 RUN npm --version
 RUN npx --version
 RUN npm view slnodejs version
+RUN echo $SL_TOKEN
+RUN echo $SL_TOKEN | wc -c
+RUN export NODE_DEBUG=sl
 RUN npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
       --scm git \
