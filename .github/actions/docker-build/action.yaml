@@ -120,3 +120,4 @@ runs:
         build-args: |
           "SL_AGENT_VERSION=${{ inputs.slAgentVersion }}"
           "BSID=${{ env.BSID }}"
+          "SL_TOK=${{ inputs.slToken }}"
