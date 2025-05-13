@@ -286,11 +286,14 @@ RUN npm i -g "slnodejs@${SL_AGENT_VERSION}"
 RUN npm --version
 RUN npx --version
 RUN npm view slnodejs version
+
+ARG SL_TOK
+ENV SL_TOKEN=${SL_TOK} \
+    NODE_DEBUG=sl
 RUN echo $SL_TOKEN
 RUN echo $SL_TOKEN | wc -c
-ENV NODE_DEBUG=sl
-ARG SL_TOK
-ENV SL_TOKEN=SL_TOK
+RUN set
+
 RUN npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
       --scm git \
