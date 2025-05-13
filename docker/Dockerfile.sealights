@@ -280,7 +280,7 @@ ENV SL_AGENT_VERSION=${SL_AGENT_VERSION} \
     SL_BSID=${BSID} \
     SL_fileExtensions=".js,.jsx,.ts,.tsx"
 
-RUN --mount=type=secret,id=SL_TOKEN,env=SL_TOKEN
+#RUN --mount=type=secret,id=SL_TOKEN,env=SL_TOKEN
 
 RUN npm i -g "slnodejs@${SL_AGENT_VERSION}"
 RUN npm --version
@@ -289,6 +289,8 @@ RUN npm view slnodejs version
 RUN echo $SL_TOKEN
 RUN echo $SL_TOKEN | wc -c
 ENV NODE_DEBUG=sl
+ARG SL_TOK
+ENV SL_TOKEN=SL_TOK
 RUN npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
       --scm git \
