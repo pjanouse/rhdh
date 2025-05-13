@@ -280,7 +280,7 @@ ENV SL_AGENT_VERSION=${SL_AGENT_VERSION} \
     SL_BSID=${BSID} \
     SL_fileExtensions=".js,.jsx,.ts,.tsx"
 
-#RUN --mount=type=secret,id=SL_TOKEN,env=SL_TOKEN
+RUN --mount=type=secret,id=sl_token,env=SL_TOKENMY
 
 RUN npm i -g "slnodejs@${SL_AGENT_VERSION}"
 RUN npm --version

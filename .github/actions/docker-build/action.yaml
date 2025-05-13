@@ -116,7 +116,7 @@ runs:
         labels: ${{ steps.meta.outputs.labels }}
         platforms: ${{ inputs.platform }}
         secrets: |
-          "SL_TOKEN=${{ inputs.slToken }}"
+          "sl_token=${{ inputs.slToken }}"
         build-args: |
           "SL_AGENT_VERSION=${{ inputs.slAgentVersion }}"
           "BSID=${{ env.BSID }}"
