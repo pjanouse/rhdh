@@ -301,7 +301,7 @@ RUN --mount=type=secret,id=sl_token,env=SL_TOKEN \
       --workspacepath "." \
       --token ${SL_TOKEN} \
       --babylonPlugins "jsx,typescript" \
-      --instrumentForBrowsers
+      --instrumentForBrowsers \
       --outputpath sl_dist
 
 RUN pwd && ls -Rla
