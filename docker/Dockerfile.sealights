@@ -290,6 +290,8 @@ RUN microdnf install -y git
 
 ENV NODE_DEBUG=sl
 COPY .git .git
+RUN git config --global --add safe.directory /opt/app-root/src
+RUN pwd
 RUN --mount=type=secret,id=sl_token,env=SL_TOKEN \
     npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
