@@ -286,7 +286,7 @@ RUN npx --version
 RUN npm view slnodejs version
 
 RUN --mount=type=secret,id=sl_token,env=SL_TOKENMY \
-    microdnf install -y git \
+    microdnf install -y git && \
     npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
       --scm git \
