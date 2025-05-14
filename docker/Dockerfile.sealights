@@ -272,7 +272,7 @@ COPY --chown=1001:1001 $EXTERNAL_SOURCE_NESTED/packages/backend/src/instrumentat
 # Remove write and execute permissions
 RUN chmod a=r ./instrumentation.js
 
-# SeaLights
+######################## SeaLights ############################
 
 ARG SL_AGENT_VERSION \
     BSID
@@ -287,19 +287,27 @@ RUN npm view slnodejs version
 
 USER 0
 RUN microdnf install -y git
-USER 1001
 
-RUN --mount=type=secret,id=sl_token,env=SL_TOKENMY \
+ENV NODE_DEBUG=sl
+COPY .git .git
+RUN --mount=type=secret,id=sl_token,env=SL_TOKEN \
     npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
       --scm git \
       --workspacepath "." \
-      --token ${SL_TOKENMY} \
-      --babylonPlugins "jsx,typescript"
+      --outputpath "./sl_build" \
+      --token ${SL_TOKEN} \
+      --babylonPlugins "jsx,typescript" \
+      --instrumentForBrowsers
 
-# SeaLights
+RUN ls -Rl
+
+USER 1001
 
 ENV NODE_OPTIONS="--no-node-snapshot --require ./node_modules/slnodejs/lib/preload.js"
+
+##############################################################
+
 ENTRYPOINT ["node", "--require", "./instrumentation.js", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.example.yaml", "--config", "app-config.example.production.yaml"]
     
 # append Brew metadata here
