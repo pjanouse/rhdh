@@ -297,12 +297,11 @@ RUN --mount=type=secret,id=sl_token,env=SL_TOKEN \
       --buildsessionid ${SL_BSID} \
       --scm git \
       --workspacepath "." \
-      --outputpath "./sl_build" \
       --token ${SL_TOKEN} \
       --babylonPlugins "jsx,typescript" \
       --instrumentForBrowsers
 
-RUN ls -Rl
+RUN pwd && ls -Rla
 
 USER 1001
 
