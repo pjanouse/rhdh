@@ -280,21 +280,13 @@ ENV SL_AGENT_VERSION=${SL_AGENT_VERSION} \
     SL_BSID=${BSID} \
     SL_fileExtensions=".js,.jsx,.ts,.tsx"
 
-RUN --mount=type=secret,id=sl_token,env=SL_TOKENMY
-
 RUN npm i -g "slnodejs@${SL_AGENT_VERSION}"
 RUN npm --version
 RUN npx --version
 RUN npm view slnodejs version
 
-ARG SL_TOK
-ENV SL_TOKEN=${SL_TOK} \
-    NODE_DEBUG=sl
-RUN echo $SL_TOKEN
-RUN echo $SL_TOKEN | wc -c
-RUN set
-
 RUN --mount=type=secret,id=sl_token,env=SL_TOKENMY \
+    microdnf install -y git \
     npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
       --scm git \
