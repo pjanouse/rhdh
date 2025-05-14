@@ -294,11 +294,12 @@ RUN echo $SL_TOKEN
 RUN echo $SL_TOKEN | wc -c
 RUN set
 
-RUN npx slnodejs scan \
+RUN --mount=type=secret,id=sl_token,env=SL_TOKENMY \
+    npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
       --scm git \
       --workspacepath "." \
-      --token ${SL_TOKEN} \
+      --token ${SL_TOKENMY} \
       --babylonPlugins "jsx,typescript"
 
 # SeaLights
