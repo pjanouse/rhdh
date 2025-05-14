@@ -291,7 +291,9 @@ RUN microdnf install -y git
 ENV NODE_DEBUG=sl
 COPY .git .git
 RUN git config --global --add safe.directory /opt/app-root/src
-RUN pwd
+
+RUN pwd && ls -Rla
+
 RUN --mount=type=secret,id=sl_token,env=SL_TOKEN \
     npx slnodejs scan \
       --buildsessionid ${SL_BSID} \
@@ -300,6 +302,11 @@ RUN --mount=type=secret,id=sl_token,env=SL_TOKEN \
       --token ${SL_TOKEN} \
       --babylonPlugins "jsx,typescript" \
       --instrumentForBrowsers
+      --outputpath sl_dist
+
+RUN pwd && ls -Rla
+
+COPY --from=runner /opt/app-root/src/sl_dist /opt/app-root/src/
 
 RUN pwd && ls -Rla
 
