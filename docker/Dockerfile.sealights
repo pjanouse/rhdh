@@ -288,11 +288,11 @@ RUN npm view slnodejs version
 USER 0
 RUN microdnf install -y git
 
-ENV NODE_DEBUG=sl
+#ENV NODE_DEBUG=sl
 COPY .git .git
 RUN git config --global --add safe.directory /opt/app-root/src
 
-RUN echo $PWD && find $PWD -printf "%TY-%Tm-%Td\t%s\t%u:%g\t%p\n" | column -t
+#RUN echo $PWD && find $PWD -printf "%TY-%Tm-%Td\t%s\t%u:%g\t%p\n" | column -t
 
 RUN --mount=type=secret,id=sl_token,env=SL_TOKEN \
     npx slnodejs scan \
@@ -300,15 +300,16 @@ RUN --mount=type=secret,id=sl_token,env=SL_TOKEN \
       --scm git \
       --workspacepath "." \
       --token ${SL_TOKEN} \
-      --babylonPlugins "jsx,typescript" \
-      --instrumentForBrowsers \
-      --outputpath sl_dist
+      --babylonPlugins "jsx,typescript" 
 
-RUN echo $PWD && find $PWD -printf "%TY-%Tm-%Td\t%s\t%u:%g\t%p\n" | column -t
+#      --instrumentForBrowsers \
+#      --outputpath sl_dist
+
+#RUN echo $PWD && find $PWD -printf "%TY-%Tm-%Td\t%s\t%u:%g\t%p\n" | column -t
 
 #COPY --from=runner /opt/app-root/src/sl_dist /opt/app-root/src/
 
-RUN echo $PWD && find $PWD -printf "%TY-%Tm-%Td\t%s\t%u:%g\t%p\n" | column -t
+#RUN echo $PWD && find $PWD -printf "%TY-%Tm-%Td\t%s\t%u:%g\t%p\n" | column -t
 
 USER 1001
 
