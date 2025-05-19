@@ -115,18 +115,18 @@ jobs:
       - name: Initial SeaLights config
         run: npx slnodejs config --appName "rhdh" --branch "main" --build "test-${PULL_REQUEST_NUMBER}" --token "${SL_TOKEN}" && echo "BSID=${cat buildSessionId}" >> $GITHUB_ENV
         env:
-          SL_TOKEN: {{ secrets.SEALIGHTS_TOKEN }}
+          SL_TOKEN: {{ secrets.SL_TOKEN }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
 
       - name: Run initial SeaLights scan
         run: npx slnodejs scan --buildsessionid "${BSID}" --scm git --scmProvider "Github" --excludedpaths "public/**/*.js,files/**/*.js" --workspacepath "./" --projectroot "./" --babylonPlugins "jsx,typescript" --token "${SL_TOKEN}"
         env:
-          SL_TOKEN: {{ secrets.SEALIGHTS_TOKEN }}
+          SL_TOKEN: {{ secrets.SL_TOKEN }}
 
       - name: Begin SeaLights run
         run: npx slnodejs start --teststage "Tests" --buildsessionid "${BSID}" --token "${SL_TOKEN}"
         env:
-          SL_TOKEN: {{ secrets.SEALIGHTS_TOKEN }}
+          SL_TOKEN: {{ secrets.SL_TOKEN }}
 
       - name: Run prettier
         run: yarn prettier:check --continue --affected
@@ -155,4 +155,4 @@ jobs:
       - name: End SeaLigts run
         run: npx slnodejs end --buildsessionid "${BSID}" --token "${SL_TOKEN}"
         env:
-          SL_TOKEN: {{ secrets.SEALIGHTS_TOKEN }}
+          SL_TOKEN: {{ secrets.SL_TOKEN }}
