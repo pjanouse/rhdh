@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: quay.io
+  REGISTRY: ${{ vars.REGISTRY }}
 
 jobs:
   build-image:
@@ -46,6 +46,8 @@ jobs:
       - name: Check Image and Relevant Changes
         id: check-image
         uses: ./.github/actions/check-image-and-changes
+        with:
+          quay_api: ${{ secrets.QUAY_API }}
 
       - name: Debug outputs
         run: |
@@ -79,13 +81,15 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_TOKEN }}
-          imageName: rhdh-community/rhdh
+          imageName: pjanouse-test/rhdh
           imageTags: |
             pr-${{ github.event.number }}
             pr-${{ github.event.number }}-${{ env.SHORT_SHA }}
           imageLabels: quay.expires-after=14d
           push: true
           platform: linux/amd64
+          slToken: ${{ secrets.SL_TOKEN }}
+          slAgentVersion: ${{ vars.SEALIGHTS_AGENT_VERSION }}
 
       - name: Comment the image pull link
         uses: actions/github-script@v7
@@ -95,5 +99,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'The image is available at:\n* [`quay.io/rhdh-community/rhdh:pr-${{ github.event.number }}`](https://quay.io/rhdh-community/rhdh:pr-${{ github.event.number }}) or\n* [`quay.io/rhdh-community/rhdh:pr-${{ github.event.number }}-${{ env.SHORT_SHA }}`](https://quay.io/rhdh-community/rhdh:pr-${{ github.event.number }}-${{ env.SHORT_SHA }})'
+              body: 'The image is available at:\n* [`quay.io/pjanouse-test/rhdh:pr-${{ github.event.number }}`](https://quay.io/pjanouse-test/rhdh:pr-${{ github.event.number }}) or\n* [`quay.io/pjanouse-test/rhdh:pr-${{ github.event.number }}-${{ env.SHORT_SHA }}`](https://quay.io/pjanouse-test/rhdh:pr-${{ github.event.number }}-${{ env.SHORT_SHA }})'
             })
