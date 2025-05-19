@@ -124,8 +124,40 @@ jobs:
             echo "ERROR: Workspace is dirty! Must run 'yarn build:dockerfile' and commit changes!"; exit 1; \
           fi
 
+      - name: Install jest-junit
+        run: yarn add --dev jest-junit
+
+      - name: Install istanbul-merge
+        run: yarn add --dev istanbul-merge
+
+      - name: Install SeaLights
+        run: npm i -g "slnodejs@${{ vars.SEALIGHTS_AGENT_VERSION }}"
+
+      - name: SeaLights config
+        run: |
+          npx slnodejs prConfig --appName rhdh --targetBranch ${{ github.base_ref }} --repositoryUrl ${{ github.event.pull_request.head.repo.clone_url }} --latestCommit ${{ env.SHORT_SHA }} --pullRequestNumber ${{ github.event.number }} --token ${{ secrets.SL_TOKEN }}
+          echo "SL_BSID=$(cat buildSessionId)" >> $GITHUB_ENV
+
+      - name: SeaLights initial scan
+        run: npx slnodejs scan --buildsessionid ${SL_BSID} --scm git --workspacepath "." --token ${{ secrets.SL_TOKEN }} --babylonPlugins "jsx,typescript"
+
+      - name: SeaLights tests start
+        run: npx slnodejs start --teststage unittests --buildsessionid ${SL_BSID} --token ${{ secrets.SL_TOKEN }}
+
       - name: Run tests
         run: yarn run test --continue --affected
+
+      - name: SeaLights upload results
+        run: npx slnodejs uploadReports --teststage unittests --buildsessionid ${SL_BSID} --reportfile packages/backend/junit.xml --reportfile packages/app/junit.xml --token ${{ secrets.SL_TOKEN }}
+
+      - name: Merge tests coverage reports
+        run: npx  istanbul-merge --out coverage.json packages/backend/coverage/coverage-final.json packages/app/coverage/coverage-final.json
+
+      - name: SeaLights upload coverage
+        run: npx slnodejs nycReport --teststage unittests --buildsessionid ${SL_BSID} --report coverage.json --token ${{ secrets.SL_TOKEN }}
+
+      - name: SeaLights tests end
+        run: slnodejs end --buildsessionid ${SL_BSID} --token ${{ secrets.SL_TOKEN }}
 
       - name: Install dynamic plugin dependencies
         run: cd ./dynamic-plugins && yarn install && cd ..
